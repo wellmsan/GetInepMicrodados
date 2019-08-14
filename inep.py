@@ -2,6 +2,8 @@ from urllib.request import urlopen
 from urllib.error import HTTPError, URLError
 from bs4 import BeautifulSoup
 
+from models import Menu
+
 try:
     html = urlopen("http://inep.gov.br/microdados")
 except HTTPError as e:
@@ -14,5 +16,13 @@ else:
 
     print("######## OPÇÕES DE DOWNLOAD '" + res.title.getText() + "' ########") 
     
-    for menu in opcoes:
-        print(menu.getText())
+    menuArray = []
+
+    position = 0
+
+    for item in opcoes:
+        menuArray.append(Menu(position + 1, item.getText(), item.data))
+
+        print(item)
+        
+    print(menuArray)
