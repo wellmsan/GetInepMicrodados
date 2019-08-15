@@ -13,16 +13,19 @@ except URLError:
 else:
     res = BeautifulSoup(html.read(), "html5lib")
     opcoes = res.find_all("a", {"class": "anchor"})
-
     print("######## OPÇÕES DE DOWNLOAD '" + res.title.getText() + "' ########") 
-    
     menuArray = []
-
     position = 0
-
-    for item in opcoes:
-        menuArray.append(Menu(position + 1, item.getText(), item.data))
-
-        print(item)
-        
-    print(menuArray)
+    for x in opcoes:
+        position = position + 1
+        menuArray.append(Menu(position, x.getText(), x["data-anchor"]))
+    for menu in menuArray:
+        print(menu)
+    opcao = input("Escolha uma opção [1-{0}]: ".format(len(menuArray)))
+    for item in menuArray:
+        if item._position == int(opcao):
+            divDownloads = res.find_all("div", {"data-anchor": item._dataAnchor})
+            print(divDownloads[0])
+            #for download in divDownloads[0].a:
+                #print(download)
+    
